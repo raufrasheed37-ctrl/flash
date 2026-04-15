@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seun Banking</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+
+<!-- 🔴 TOPBAR -->
+<header class="topbar">
+  <div class="logo">SEUN BANKING</div>
+  <div class="overlay" id="overlay" onclick="toggleMenu()">≡</div>
+
+</header>
+
+<!-- 🔴 MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a>Accounts</a>
+  <a>Bill Pay</a>
+  <a>Transactions</a>
+  <a>Notifications</a>
+
+  <hr>
+
+  <a class="logout">Sign Out</a>
+</div>
+
+<!-- 🔴 MAIN -->
+<main class="main">
+
+  <p class="small">Welcome Back</p>
+  <h2>Seun User</h2>
+
+  <!-- ACTION SELECT -->
+  <div class="action-box">
+    <select id="actionSelect">
+      <option value="">Select an action</option>
+      <option value="payment">Make Payment</option>
+      <option value="transfer">Transfer</option>
+      <option value="statement">View Statements</option>
+    </select>
+
+    <button onclick="handleAction()">GO</button>
+  </div>
+
+  <h3 class="section-title">Accounts</h3>
+
+  <!-- CHECKING -->
+  <div class="card">
+    <p class="label">Checking XXXX1234</p>
+    <h3>$3,817.13</h3>
+    <canvas id="lineChart"></canvas>
+  </div>
+
+  <!-- SAVINGS -->
+  <div class="card">
+    <p class="label">Savings XXXX5678</p>
+    <h3>$10,817.13</h3>
+    <p class="sub">Growth: 0.13% | Interest: $37.39</p>
+  </div>
+
+  <!-- CREDIT -->
+  <div class="card">
+    <p class="label">Credit XXXX9999</p>
+    <h3>$1,523.13</h3>
+    <canvas id="creditPie"></canvas>
+  </div>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
