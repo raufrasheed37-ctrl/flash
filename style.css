@@ -7,20 +7,46 @@ body {
 /* 🔴 TOPBAR */
 .topbar {
   background: #b31b1b;
-  color: white;
-  display: flex;
-  justify-content: space-between;
-  padding: 15px;
-  align-items: center;
+  position: relative;
+  height: 60px;
 }
-
 .logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  
   font-weight: bold;
+  font-size: 14px;
+  text-align: center;
+  line-height: 1.1;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+
+  background: linear-gradient(
+    180deg,
+    #fff2a6 0%,   /* light shine */
+    #ffcc00 40%,  /* main gold */
+    #cc9900 100%  /* deep gold */
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow:
+    0 1px 1px rgba(0,0,0,0.4),
+    0 0 2px rgba(255,204,0,0.5);
 }
 
 .menu-btn {
-  font-size: 22px;
+  font-size: 26px;
+  color: white;
+  font-weight: bold;
   cursor: pointer;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 /* OVERLAY (dark background) */
@@ -44,7 +70,7 @@ body {
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: -260px;
+  right: -100%;   
   width: 260px;
   height: 100%;
   background: white;
@@ -109,13 +135,17 @@ body {
   margin-top: 20px;
 }
 
-/* CARDS */
-.card {
-  background: white;
-  padding: 15px;
-  border-radius: 10px;
-  margin-top: 10px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+
+
+/* 📱 MOBILE FIX */
+@media (max-width: 768px) {
+  .card.full {
+    flex-direction: column;
+  }
+
+  .left, .right {
+    width: 100%;
+  }
 }
 
 .label {
@@ -126,4 +156,119 @@ body {
 .sub {
   font-size: 12px;
   color: #555;
+}
+
+/* CARD */
+.wf-card {
+  background: white;
+  padding: 15px;
+  border-radius: 6px;
+  margin-top: 15px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* TITLE */
+.wf-title {
+  font-size: 11px;
+  color: gray;
+  letter-spacing: 1px;
+}
+
+/* BIG AMOUNT */
+.wf-amount {
+  font-size: 28px;
+  margin: 5px 0;
+}
+
+/* SUB TEXT */
+.wf-sub {
+  font-size: 12px;
+  color: gray;
+}
+
+/* ROW */
+.wf-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  margin-top: 10px;
+}
+
+/* BUTTON */
+.wf-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  background: #b31b1b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+/* CREDIT BAR */
+.credit-bar {
+  height: 8px;
+  background: #ddd;
+  border-radius: 5px;
+  margin-top: 10px;
+  overflow: hidden;
+}
+
+.credit-bar .used {
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(to right, red, green);
+}
+
+/* COLORS */
+.green { color: green; }
+.red { color: red; }
+
+/* 🔥 SECTION TITLE */
+.wf-section-title {
+  color: #b31b1b;
+  margin-top: 20px;
+}
+
+/* 🔥 ACCOUNT LINK */
+.wf-account-link {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+/* 🔥 BADGE */
+.badge {
+  background: #b31b1b;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 11px;
+}
+
+/* 🔥 CREDIT TOP */
+.credit-top {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.credit-top img {
+  border-radius: 4px;
+}
+
+/* 🔥 SMALL BUTTON */
+.wf-btn.small {
+  width: auto;
+  padding: 6px 10px;
+  margin-top: 5px;
+}
+
+/* 🔥 LIMIT TEXT */
+.limit {
+  font-size: 11px;
+  color: gray;
+  margin-top: 5px;
 }

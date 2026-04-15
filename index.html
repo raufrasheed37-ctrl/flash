@@ -13,9 +13,8 @@
 
 <!-- 🔴 TOPBAR -->
 <header class="topbar">
-  <div class="logo">SEUN BANKING</div>
-  <div class="overlay" id="overlay" onclick="toggleMenu()">≡</div>
-
+  <div class="logo">WELLS<br>FARGO</div>
+  <div class="menu-btn" onclick="toggleMenu()">≡</div>
 </header>
 
 <!-- 🔴 MOBILE MENU -->
@@ -30,13 +29,15 @@
   <a class="logout">Sign Out</a>
 </div>
 
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
 <!-- 🔴 MAIN -->
 <main class="main">
 
   <p class="small">Welcome Back</p>
-  <h2>Seun User</h2>
+  <h2>Waldemar Bürger</h2>
 
-  <!-- ACTION SELECT -->
+  <!-- ACTION -->
   <div class="action-box">
     <select id="actionSelect">
       <option value="">Select an action</option>
@@ -44,31 +45,106 @@
       <option value="transfer">Transfer</option>
       <option value="statement">View Statements</option>
     </select>
-
     <button onclick="handleAction()">GO</button>
   </div>
 
-  <h3 class="section-title">Accounts</h3>
+  <!-- 🔴 CASH ACCOUNTS -->
+  <h3 class="wf-section-title">Cash Accounts</h3>
+
+  <div class="wf-account-link">
+    <span>70 Checking XXXXX1234</span>
+    <span class="badge">2</span>
+  </div>
 
   <!-- CHECKING -->
-  <div class="card">
-    <p class="label">Checking XXXX1234</p>
-    <h3>$3,817.13</h3>
+  <div class="wf-card">
+    <p class="wf-title">BALANCE</p>
+    <h1 class="wf-amount">$3,817.13</h1>
+    <p class="wf-sub">Available Balance: $3,317.13</p>
+
     <canvas id="lineChart"></canvas>
+
+    <div class="wf-row">
+      <span>LAST TRANSACTION</span>
+      <span class="red">- $50.00</span>
+    </div>
+
+    <button class="wf-btn">View More</button>
+  </div>
+
+  <!-- SAVINGS LINK -->
+  <div class="wf-account-link">
+    <span>01 Savings XXXXX1234</span>
+    <span class="badge">1</span>
   </div>
 
   <!-- SAVINGS -->
-  <div class="card">
-    <p class="label">Savings XXXX5678</p>
-    <h3>$10,817.13</h3>
-    <p class="sub">Growth: 0.13% | Interest: $37.39</p>
+  <div class="wf-card">
+    <p class="wf-title">BALANCE</p>
+    <h1 class="wf-amount">$10,817.13</h1>
+    <p class="wf-sub">Available Balance: $9,153.27</p>
+
+    <canvas id="savingsChart"></canvas>
+
+    <div class="wf-row">
+      <span>LAST TRANSACTION</span>
+      <span class="green">+ $37.39</span>
+    </div>
+
+    <button class="wf-btn">View More</button>
   </div>
 
-  <!-- CREDIT -->
-  <div class="card">
-    <p class="label">Credit XXXX9999</p>
-    <h3>$1,523.13</h3>
-    <canvas id="creditPie"></canvas>
+  <!-- CERTIFICATE -->
+  <div class="wf-account-link">
+    <span>14 18-month Certificate</span>
+    <span class="badge">1</span>
+  </div>
+
+  <div class="wf-card">
+    <p class="wf-title">BALANCE</p>
+    <h1 class="wf-amount">$10,020.39</h1>
+    <p class="wf-sub">Available Balance: $5,000.00</p>
+
+    <button class="wf-btn">View More</button>
+  </div>
+
+  <!-- 🔴 CREDIT -->
+  <h3 class="wf-section-title">Credit Accounts</h3>
+
+  <div class="wf-account-link">
+    <span>Platinum XXXX XXXX XXXX 1234</span>
+    <span class="badge">2</span>
+  </div>
+
+  <div class="wf-card">
+
+    <!-- CARD TOP -->
+    <div class="credit-top">
+      <img src="https://via.placeholder.com/120x70" />
+
+      <div>
+        <p>Payment of $400</p>
+        <small>due on 11/6</small>
+        <button class="wf-btn small">Pay Now</button>
+      </div>
+    </div>
+
+    <p class="wf-title">BALANCE</p>
+    <h1 class="wf-amount">$1,523.13</h1>
+    <p class="wf-sub">Available Balance: $3,473.87</p>
+
+    <div class="credit-bar">
+      <div class="used"></div>
+    </div>
+
+    <p class="limit">Credit Limit $5000</p>
+
+    <div class="wf-row">
+      <span>LAST TRANSACTION</span>
+      <span class="red">- $70.00</span>
+    </div>
+
+    <button class="wf-btn">View More</button>
   </div>
 
 </main>

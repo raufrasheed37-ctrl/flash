@@ -35,6 +35,25 @@ new Chart(document.getElementById("lineChart"), {
   }
 });
 
+// 🔥 ACTIVITY BREAKDOWN PIE
+new Chart(document.getElementById("pieChart"), {
+  type: "doughnut",
+  data: {
+    labels: ["Food", "Bills", "Shopping"],
+    datasets: [{
+      data: [40, 30, 30],
+      backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"]
+    }]
+  },
+  options: {
+    plugins: {
+      legend: {
+        position: "bottom"
+      }
+    }
+  }
+});
+
 // CREDIT PIE
 new Chart(document.getElementById("creditPie"), {
   type: "doughnut",
@@ -43,5 +62,28 @@ new Chart(document.getElementById("creditPie"), {
     datasets: [{
       data: [70, 30]
     }]
+  }
+});
+
+
+// 🔥 SAVINGS MINI GROWTH GRAPH
+new Chart(document.getElementById("savingsChart"), {
+  type: "line",
+  data: {
+    labels: ["Jan","Feb","Mar","Apr","May"],
+    datasets: [{
+      data: [10000, 10200, 10400, 10700, 10817],
+      borderWidth: 2,
+      tension: 0.4
+    }]
+  },
+  options: {
+    plugins: {
+      legend: { display: false }
+    },
+    scales: {
+      x: { display: false },
+      y: { display: false }
+    }
   }
 });
