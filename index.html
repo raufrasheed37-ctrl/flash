@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Seun Banking</title>
+<title>Wells Fargo</title>
 
 <link rel="stylesheet" href="style.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,7 +11,31 @@
 
 <body>
 
+  <div id="loginPage">
+
+  <header class="topbar">
+    <div class="logo">WELLS<br>FARGO</div>
+  </header>
+
+  <div class="login-box">
+    <h2 id="greeting"></h2>
+
+    <input type="text" id="username" placeholder="Username" autocomplete="off" oninput="checkInputs()">
+
+    <div class="password-box">
+      <input type="password" id="password" placeholder="Password" autocomplete="new-password" oninput="checkInputs()">
+      <span id="toggleText" onclick="togglePassword()">Show</span>
+    </div>
+
+    <button id="loginBtn" onclick="login()" disabled>Sign In</button>
+    <p id="errorBox" class="error"></p>
+    <div id="spinner" class="spinner"></div>
+  </div>
+
+</div>
+
 <!-- 🔴 TOPBAR -->
+ <div id="app" style="display:none;">
 <header class="topbar">
   <div class="logo">WELLS<br>FARGO</div>
   <div class="menu-btn" onclick="toggleMenu()">≡</div>
@@ -19,14 +43,14 @@
 
 <!-- 🔴 MOBILE MENU -->
 <div class="mobile-menu" id="mobileMenu">
-  <a>Accounts</a>
-  <a>Bill Pay</a>
-  <a>Transactions</a>
-  <a>Notifications</a>
+  <a href="#" onclick="showMessage()">Accounts</a>
+  <a href="#" onclick="showMessage()">Bill Pay</a>
+  <a href="#" onclick="showMessage()">Transactions</a>
+  <a href="#" onclick="showMessage()">Notifications</a>
 
   <hr>
 
-  <a class="logout">Sign Out</a>
+<a class="logout" onclick="logout()">Sign Out</a>
 </div>
 
 <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
@@ -41,9 +65,9 @@
   <div class="action-box">
     <select id="actionSelect">
       <option value="">Select an action</option>
-      <option value="payment">Make Payment</option>
-      <option value="transfer">Transfer</option>
-      <option value="statement">View Statements</option>
+      <option value="payment" onclick="showMessage()">Make Payment</option>
+      <option value="transfer" onclick="showMessage()">Transfer</option>
+      <option value="statement" onclick="showMessage()">View Statements</option>
     </select>
     <button onclick="handleAction()">GO</button>
   </div>
@@ -52,102 +76,130 @@
   <h3 class="wf-section-title">Cash Accounts</h3>
 
   <div class="wf-account-link">
-    <span>70 Checking XXXXX1234</span>
+    <span>70 Checking XXXXX9762</span>
     <span class="badge">2</span>
   </div>
 
   <!-- CHECKING -->
   <div class="wf-card">
     <p class="wf-title">BALANCE</p>
-    <h1 class="wf-amount">$3,817.13</h1>
-    <p class="wf-sub">Available Balance: $3,317.13</p>
+    <h1 class="wf-amount">$6,300,817<span class="wf-decimal">.13</span></h1>
+    <p class="wf-sub">Available Balance: $63,317.13</p>
 
     <canvas id="lineChart"></canvas>
 
     <div class="wf-row">
       <span>LAST TRANSACTION</span>
-      <span class="red">- $50.00</span>
+      <span class="red">- $1,760,545.10</span>
     </div>
 
-    <button class="wf-btn">View More</button>
+    <button class="wf-btn" onclick="showMessage()">View More</button>
   </div>
 
-  <!-- SAVINGS LINK -->
-  <div class="wf-account-link">
-    <span>01 Savings XXXXX1234</span>
-    <span class="badge">1</span>
-  </div>
 
   <!-- SAVINGS -->
-  <div class="wf-card">
-    <p class="wf-title">BALANCE</p>
-    <h1 class="wf-amount">$10,817.13</h1>
-    <p class="wf-sub">Available Balance: $9,153.27</p>
+<div class="wf-account-link">
+  <span>01 <a href="#">Savings XXXXX8956</a></span>
+  <span class="badge">1</span>
+</div>
 
-    <canvas id="savingsChart"></canvas>
+<div class="wf-card wf-savings-card">
+  <p class="wf-title">BALANCE</p>
+  <h1 class="wf-amount">$10,817<span class="wf-decimal">.27</span></h1>
+  <p class="wf-sub">Available Balance: $9,153.27</p>
 
-    <div class="wf-row">
-      <span>LAST TRANSACTION</span>
-      <span class="green">+ $37.39</span>
+  <canvas id="savingsChart"></canvas>
+
+  <div class="wf-row wf-transaction-row">
+    <span class="wf-row-label">LAST TRANSACTION</span>
+    <span class="wf-row-mid">DEPOSIT OF $500.00</span>
+    <span class="green">+ $5,362.19</span>
+  </div>
+
+  <button class="wf-btn wf-btn-small-center" onclick="showMessage()">View More</button>
+</div>
+
+<!-- CERTIFICATE -->
+<div class="wf-account-link">
+  <span>14 <a href="#">18-month Certificate</a></span>
+  <span class="badge">1</span>
+</div>
+
+<div class="wf-card wf-certificate-card">
+  <p class="wf-title">BALANCE</p>
+  <h1 class="wf-amount">$10,020.39</h1>
+  <p class="wf-sub">Available Balance: $5,000.00</p>
+
+  <button class="wf-btn wf-btn-small-center" onclick="showMessage()">View More</button>
+</div>
+
+<!-- CREDIT -->
+<h3 class="wf-section-title">Credit Accounts</h3>
+
+<div class="wf-account-link">
+  <span><a href="#">Platinum XXXX XXXX XXXX 4634</a></span>
+  <span class="badge">2</span>
+</div>
+
+<div class="wf-card wf-credit-card">
+  <div class="credit-top">
+    <img
+      class="credit-card-img"
+      src="images (17).jpeg"
+      alt="Credit card"
+    />
+
+    <div class="credit-top-info">
+      <p class="credit-due">Payment of $900</p>
+      <p class="credit-due-sub">due on 11/6</p>
+      <button class="wf-btn wf-pay-btn" onclick="showMessage()">Pay Now</button>
     </div>
-
-    <button class="wf-btn">View More</button>
   </div>
 
-  <!-- CERTIFICATE -->
-  <div class="wf-account-link">
-    <span>14 18-month Certificate</span>
-    <span class="badge">1</span>
+  <p class="wf-title credit-balance-title">BALANCE</p>
+  <h1 class="wf-amount">$1,523<span class="wf-decimal">.13</span></h1>
+  <p class="wf-sub">Available Balance: $6,473.87</p>
+
+  <div class="credit-bar">
+    <div class="credit-bar-used"></div>
+    <div class="credit-bar-available"></div>
   </div>
 
-  <div class="wf-card">
-    <p class="wf-title">BALANCE</p>
-    <h1 class="wf-amount">$10,020.39</h1>
-    <p class="wf-sub">Available Balance: $5,000.00</p>
+  <p class="limit">Credit Limit $10,000</p>
 
-    <button class="wf-btn">View More</button>
+  <div class="wf-row wf-transaction-row">
+    <span class="wf-row-label">LAST TRANSACTION</span>
+    <span class="wf-row-mid">SUPSTORE</span>
+    <span class="wf-row-right">EXP 2%</span>
   </div>
 
-  <!-- 🔴 CREDIT -->
-  <h3 class="wf-section-title">Credit Accounts</h3>
+  <button class="wf-btn wf-btn-small-center" onclick="showMessage()">View More</button>
+</div>
 
-  <div class="wf-account-link">
-    <span>Platinum XXXX XXXX XXXX 1234</span>
-    <span class="badge">2</span>
+<!-- FOOTER -->
+<footer class="wf-footer">
+  <div class="wf-footer-links">
+    <a href="#">About Wells Fargo</a>
+    <span>|</span>
+    <a href="#">Careers</a>
+    <span>|</span>
+    <a href="#">Privacy, Security &amp; Legal</a>
   </div>
 
-  <div class="wf-card">
-
-    <!-- CARD TOP -->
-    <div class="credit-top">
-      <img src="https://via.placeholder.com/120x70" />
-
-      <div>
-        <p>Payment of $400</p>
-        <small>due on 11/6</small>
-        <button class="wf-btn small">Pay Now</button>
-      </div>
-    </div>
-
-    <p class="wf-title">BALANCE</p>
-    <h1 class="wf-amount">$1,523.13</h1>
-    <p class="wf-sub">Available Balance: $3,473.87</p>
-
-    <div class="credit-bar">
-      <div class="used"></div>
-    </div>
-
-    <p class="limit">Credit Limit $5000</p>
-
-    <div class="wf-row">
-      <span>LAST TRANSACTION</span>
-      <span class="red">- $70.00</span>
-    </div>
-
-    <button class="wf-btn">View More</button>
+  <div class="wf-footer-links">
+    <a href="#">Report Email Fraud</a>
+    <span>|</span>
+    <a href="#">Sitemap</a>
+    <span>|</span>
+    <a href="#">Home</a>
   </div>
 
+  <p class="wf-footer-copy">© 1999–2026 Wells Fargo. All Rights Reserved.</p>
+</footer>
 </main>
+</div>
+
+<div id="toast">Service not available</div>
 
 <script src="script.js"></script>
 </body>
