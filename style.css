@@ -359,6 +359,7 @@ body {
   margin: auto;
   width: 90%;
   max-width: 360px;
+  padding: 0 20px;
 }
 
 .login-box h2 {
