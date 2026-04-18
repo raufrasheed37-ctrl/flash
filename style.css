@@ -357,14 +357,9 @@ body {
 
 .login-box {
   width: 85%;
-  max-width: 220px;
+  max-width: 320px;
   margin: auto;
   padding: 0 15px;
-}
-
-.login-box,
-.login-box * {
-  box-sizing: border-box;
 }
 
 .login-box h2 {
