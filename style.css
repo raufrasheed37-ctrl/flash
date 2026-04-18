@@ -361,6 +361,11 @@ body {
   margin: 80px auto 0;
 }
 
+.login-box,
+.login-box * {
+  box-sizing: border-box;
+}
+
 .login-box h2 {
   font-size: 28px;
   margin-bottom: 20px;
@@ -373,6 +378,7 @@ body {
   border-radius: 30px;
   border: 1px solid #aaa;
   font-size: 16px;
+  box-sizing: border-box;
 }
 
 .password-box {
