@@ -356,10 +356,9 @@ body {
 }
 
 .login-box {
-  width: 85%;
-  max-width: 220px;
-  margin: auto;
-  padding: 0 15px;
+  width: 90%;
+  max-width: 400px;
+  margin: 80px auto;
 }
 
 .login-box,
@@ -375,11 +374,9 @@ body {
 .login-box input {
   width: 100%;
   padding: 16px;
-  margin-bottom: 15px;
   border-radius: 30px;
   border: 1px solid #aaa;
   font-size: 16px;
-  box-sizing: border-box;
 }
 
 .password-box {
