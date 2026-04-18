@@ -356,10 +356,9 @@ body {
 }
 
 .login-box {
-  width: 85%;
+  width: 100%;
   max-width: 320px;
   margin: auto;
-  padding: 0 15px;
 }
 
 .login-box h2 {
