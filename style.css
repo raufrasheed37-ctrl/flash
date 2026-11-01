@@ -800,10 +800,11 @@ button {
 }
 
 /* =================================
-   TRANSACTION PAGE SCROLLING FIX
+   CLEAN TRANSACTION PAGE DESIGN
 ================================= */
 
 .transaction-page {
+  width: 100%;
   height: calc(100dvh - 110px);
   min-height: 320px;
   display: flex;
@@ -813,6 +814,7 @@ button {
 
 .transaction-header {
   flex-shrink: 0;
+  margin-bottom: 25px;
 }
 
 .transaction-container {
@@ -820,18 +822,37 @@ button {
   min-height: 0;
   display: flex;
   flex-direction: column;
+
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+
+  padding: 0;
   overflow: hidden;
 }
 
 .transaction-controls {
   flex-shrink: 0;
-  background: #fff;
+  background: transparent;
 }
 
-.transaction-heading,
-.transaction-search,
+.transaction-heading h3 {
+  font-size: 23px;
+  margin-bottom: 8px;
+}
+
+.transaction-heading p {
+  margin-bottom: 20px;
+}
+
+.transaction-search {
+  border-radius: 10px;
+  margin: 10px 0 18px;
+}
+
 .transaction-filters {
-  flex-shrink: 0;
+  padding-bottom: 18px;
 }
 
 .transaction-list-scroll {
@@ -843,14 +864,33 @@ button {
   overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  padding-right: 5px;
+  padding: 0 5px 0 0;
+}
+
+.transaction-item {
+  padding: 20px 0;
+  border-bottom: 1px solid rgba(150, 150, 150, 0.2);
 }
 
 .transaction-list-scroll::-webkit-scrollbar {
-  width: 5px;
+  width: 4px;
 }
 
 .transaction-list-scroll::-webkit-scrollbar-thumb {
-  background: #c8cdd4;
+  background: #888;
   border-radius: 10px;
+}
+
+@media (max-width: 480px) {
+  .transaction-header {
+    margin-bottom: 20px;
+  }
+
+  .transaction-heading h3 {
+    font-size: 21px;
+  }
+
+  .transaction-item {
+    padding: 18px 0;
+  }
 }
