@@ -798,3 +798,37 @@ button {
     font-size: 10px;
   }
 }
+
+/* TRANSACTION PAGE SCROLLING */
+
+.transaction-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.transaction-heading,
+.transaction-search,
+.transaction-filters {
+  flex-shrink: 0;
+}
+
+.transaction-list-scroll {
+  height: 55vh;
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding-right: 5px;
+}
+
+/* Custom scrollbar */
+.transaction-list-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+
+.transaction-list-scroll::-webkit-scrollbar-thumb {
+  background: #c8cdd4;
+  border-radius: 10px;
+}
