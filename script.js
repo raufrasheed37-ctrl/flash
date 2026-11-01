@@ -2,16 +2,12 @@
    BANKING DASHBOARD DEMO
 ========================================== */
 
-// DEMO LOGIN
 const users = [
-  {
-    username: "demo",
-    password: "demo1234"
-  }
+  { username: "demo", password: "demo1234" }
 ];
 
-const maxAttempts = 3;
-const lockDuration = 30000;
+const MAX_ATTEMPTS = 3;
+const LOCK_DURATION = 30000;
 
 let attempts = Number(localStorage.getItem("loginAttempts")) || 0;
 let lockUntil = Number(localStorage.getItem("lockUntil")) || 0;
@@ -21,10 +17,10 @@ let toastTimeout;
 
 let checkingChart = null;
 let savingsChart = null;
-
+let currentFilter = "All";
 
 /* ==========================================
-   HELPER FUNCTIONS
+   HELPERS
 ========================================== */
 
 function formatMoney(amount) {
@@ -53,9 +49,8 @@ function getStoredData(key, fallback) {
   }
 }
 
-
 /* ==========================================
-   TOAST NOTIFICATION
+   TOAST
 ========================================== */
 
 function showMessage(message = "Service not available") {
@@ -82,7 +77,6 @@ function showMessage(message = "Service not available") {
   }, 2500);
 }
 
-
 /* ==========================================
    GREETING
 ========================================== */
@@ -90,23 +84,15 @@ function showMessage(message = "Service not available") {
 function setGreeting() {
   const hour = new Date().getHours();
 
-  let greeting;
+  let greeting = "Good evening";
 
-  if (hour < 12) {
-    greeting = "Good morning";
-  } else if (hour < 17) {
-    greeting = "Good afternoon";
-  } else {
-    greeting = "Good evening";
-  }
+  if (hour < 12) greeting = "Good morning";
+  else if (hour < 17) greeting = "Good afternoon";
 
-  const greetingElement = document.getElementById("greeting");
+  const element = document.getElementById("greeting");
 
-  if (greetingElement) {
-    greetingElement.textContent = greeting;
-  }
+  if (element) element.textContent = greeting;
 }
-
 
 /* ==========================================
    MOBILE MENU
@@ -125,7 +111,6 @@ function closeMenu() {
   document.getElementById("overlay")?.classList.remove("active");
 }
 
-
 /* ==========================================
    ACTION HANDLER
 ========================================== */
@@ -140,7 +125,6 @@ function handleAction() {
 
   showMessage("This feature is currently unavailable");
 }
-
 
 /* ==========================================
    CHART DATA
@@ -169,7 +153,6 @@ const savingsHistory = [
   9900, 9950, 10000, 10200, 10817.27
 ];
 
-
 /* ==========================================
    CHECKING CHART
 ========================================== */
@@ -179,15 +162,13 @@ function createCheckingChart() {
 
   if (!canvas || typeof Chart === "undefined") return;
 
-  if (checkingChart) {
-    checkingChart.destroy();
-  }
+  if (checkingChart) checkingChart.destroy();
 
   const ctx = canvas.getContext("2d");
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 250);
 
-  gradient.addColorStop(0, "rgba(166,25,46,0.24)");
+  gradient.addColorStop(0, "rgba(166,25,46,0.25)");
   gradient.addColorStop(1, "rgba(166,25,46,0.01)");
 
   checkingChart = new Chart(ctx, {
@@ -197,23 +178,20 @@ function createCheckingChart() {
       labels: checkingHistory.map(item => item.day),
 
       datasets: [{
-        label: "Demo checking balance",
-
+        label: "Illustrative checking balance",
         data: checkingHistory.map(item => item.balance),
 
         borderColor: "#a6192e",
         backgroundColor: gradient,
 
         fill: true,
-
         borderWidth: 3,
-
         tension: 0.4,
 
         pointRadius: 3,
         pointHoverRadius: 7,
 
-        pointBackgroundColor: "#ffffff",
+        pointBackgroundColor: "#fff",
         pointBorderColor: "#a6192e",
         pointBorderWidth: 2
       }]
@@ -221,9 +199,7 @@ function createCheckingChart() {
 
     options: {
       responsive: true,
-
       maintainAspectRatio: true,
-
       aspectRatio: 2.1,
 
       interaction: {
@@ -237,9 +213,7 @@ function createCheckingChart() {
       },
 
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
 
         tooltip: {
           backgroundColor: "#252d38",
@@ -256,23 +230,13 @@ function createCheckingChart() {
 
       scales: {
         x: {
-          grid: {
-            display: false
-          },
-
-          border: {
-            display: false
-          },
-
-          ticks: {
-            color: "#89919c"
-          }
+          grid: { display: false },
+          border: { display: false },
+          ticks: { color: "#89919c" }
         },
 
         y: {
-          border: {
-            display: false
-          },
+          border: { display: false },
 
           grid: {
             color: "rgba(0,0,0,0.06)"
@@ -291,7 +255,6 @@ function createCheckingChart() {
   });
 }
 
-
 /* ==========================================
    SAVINGS CHART
 ========================================== */
@@ -301,9 +264,7 @@ function createSavingsChart() {
 
   if (!canvas || typeof Chart === "undefined") return;
 
-  if (savingsChart) {
-    savingsChart.destroy();
-  }
+  if (savingsChart) savingsChart.destroy();
 
   const ctx = canvas.getContext("2d");
 
@@ -319,29 +280,23 @@ function createSavingsChart() {
       labels: savingsHistory.map((_, index) => `Day ${index + 1}`),
 
       datasets: [{
-        label: "Demo savings balance",
-
+        label: "Illustrative savings balance",
         data: savingsHistory,
 
         borderColor: "#79bd45",
         backgroundColor: gradient,
 
         fill: true,
-
         borderWidth: 2.5,
-
         tension: 0.45,
 
         pointRadius: 0,
-        pointHoverRadius: 5,
-
-        pointHoverBackgroundColor: "#79bd45"
+        pointHoverRadius: 5
       }]
     },
 
     options: {
       responsive: true,
-
       maintainAspectRatio: false,
 
       interaction: {
@@ -355,17 +310,11 @@ function createSavingsChart() {
       },
 
       plugins: {
-        legend: {
-          display: false
-        },
+        legend: { display: false },
 
         tooltip: {
           enabled: true,
-
           backgroundColor: "#252d38",
-
-          padding: 10,
-
           displayColors: false,
 
           callbacks: {
@@ -377,163 +326,168 @@ function createSavingsChart() {
       },
 
       scales: {
-        x: {
-          display: false
-        },
-
-        y: {
-          display: false
-        }
+        x: { display: false },
+        y: { display: false }
       }
     }
   });
 }
 
-
 /* ==========================================
-   DEMO TRANSACTIONS
+   40 ILLUSTRATIVE TRANSACTIONS
 ========================================== */
 
-const initialTransactions = [
-  {
-    id: "DEMO-10001",
-    type: "Deposit",
-    description: "Sample deposit",
-    amount: 500,
-    date: "2026-10-29T10:30:00",
-    status: "Demo"
-  },
+const transactionData = [
+  ["Deposit", "Sample account deposit", 4500, "2026-10-31T09:15:00"],
+  ["Withdrawal", "Sample ATM withdrawal", -300, "2026-10-30T14:25:00"],
+  ["Transfer", "Sample outgoing transfer", -750, "2026-10-30T11:40:00"],
+  ["Deposit", "Sample account credit", 1200, "2026-10-29T16:20:00"],
+  ["Withdrawal", "Sample grocery purchase", -85.50, "2026-10-29T12:10:00"],
+  ["Transfer", "Sample internal transfer", -500, "2026-10-28T10:30:00"],
+  ["Deposit", "Sample refund", 250, "2026-10-28T09:15:00"],
+  ["Withdrawal", "Sample online purchase", -129.99, "2026-10-27T18:40:00"],
+  ["Deposit", "Sample account credit", 850, "2026-10-27T11:20:00"],
+  ["Transfer", "Sample outgoing transfer", -1200, "2026-10-26T15:30:00"],
 
-  {
-    id: "DEMO-10002",
-    type: "Withdrawal",
-    description: "Sample withdrawal",
-    amount: -150,
-    date: "2026-10-28T14:20:00",
-    status: "Demo"
-  },
+  ["Withdrawal", "Sample utility payment", -145, "2026-10-26T10:15:00"],
+  ["Deposit", "Sample deposit", 2000, "2026-10-25T13:45:00"],
+  ["Transfer", "Sample internal transfer", -350, "2026-10-25T09:20:00"],
+  ["Withdrawal", "Sample restaurant payment", -65, "2026-10-24T19:30:00"],
+  ["Deposit", "Sample refund", 175, "2026-10-24T11:10:00"],
+  ["Withdrawal", "Sample subscription payment", -19.99, "2026-10-23T08:30:00"],
+  ["Transfer", "Sample outgoing transfer", -900, "2026-10-23T07:45:00"],
+  ["Deposit", "Sample account credit", 3200, "2026-10-22T14:20:00"],
+  ["Withdrawal", "Sample fuel purchase", -75, "2026-10-22T12:15:00"],
+  ["Transfer", "Sample internal transfer", -450, "2026-10-21T16:40:00"],
 
-  {
-    id: "DEMO-10003",
-    type: "Transfer",
-    description: "Sample transfer",
-    amount: -250,
-    date: "2026-10-27T09:15:00",
-    status: "Demo"
-  },
+  ["Deposit", "Sample salary deposit", 5000, "2026-10-21T09:00:00"],
+  ["Withdrawal", "Sample online purchase", -210, "2026-10-20T18:25:00"],
+  ["Transfer", "Sample outgoing transfer", -600, "2026-10-20T14:10:00"],
+  ["Deposit", "Sample refund", 120, "2026-10-19T11:35:00"],
+  ["Withdrawal", "Sample shopping payment", -340, "2026-10-19T10:20:00"],
+  ["Deposit", "Sample account credit", 750, "2026-10-18T15:40:00"],
+  ["Transfer", "Sample internal transfer", -250, "2026-10-18T09:30:00"],
+  ["Withdrawal", "Sample restaurant payment", -95, "2026-10-17T20:15:00"],
+  ["Deposit", "Sample deposit", 1500, "2026-10-17T12:00:00"],
+  ["Withdrawal", "Sample ATM withdrawal", -200, "2026-10-16T16:30:00"],
 
-  {
-    id: "DEMO-10004",
-    type: "Deposit",
-    description: "Sample deposit",
-    amount: 800,
-    date: "2026-10-25T12:40:00",
-    status: "Demo"
-  }
+  ["Transfer", "Sample outgoing transfer", -1100, "2026-10-16T10:45:00"],
+  ["Deposit", "Sample account credit", 950, "2026-10-15T13:20:00"],
+  ["Withdrawal", "Sample utility payment", -180, "2026-10-15T09:10:00"],
+  ["Transfer", "Sample internal transfer", -400, "2026-10-14T17:30:00"],
+  ["Deposit", "Sample refund", 320, "2026-10-14T11:15:00"],
+  ["Withdrawal", "Sample online purchase", -89.99, "2026-10-13T15:50:00"],
+  ["Deposit", "Sample deposit", 2700, "2026-10-13T10:25:00"],
+  ["Transfer", "Sample outgoing transfer", -650, "2026-10-12T14:40:00"],
+  ["Withdrawal", "Sample grocery purchase", -135, "2026-10-12T09:30:00"],
+  ["Deposit", "Sample account credit", 1800, "2026-10-11T12:20:00"],
+  ["Withdrawal", "Sample card purchase", -55, "2026-10-10T16:30:00"]
 ];
+
+const initialTransactions = transactionData.map((item, index) => ({
+  id: `DEMO-${10001 + index}`,
+  type: item[0],
+  description: item[1],
+  amount: item[2],
+  date: item[3],
+  status: "Demo"
+}));
 
 let transactions = getStoredData(
   "demoTransactions",
   initialTransactions
 );
 
-
 /* ==========================================
-   TRANSACTION PAGE
+   CREATE TRANSACTION PAGE
 ========================================== */
 
 function createTransactionSection() {
-
   const main = document.querySelector(".main");
 
-  if (!main) return;
-
-  if (document.getElementById("transactionHistory")) return;
+  if (!main || document.getElementById("transactionHistory")) return;
 
   const section = document.createElement("section");
 
   section.id = "transactionHistory";
-
   section.style.display = "none";
 
   section.innerHTML = `
+    <div class="transaction-page">
 
-    <div class="transaction-header">
+      <div class="transaction-header">
 
-      <button
-        class="transaction-back"
-        onclick="showDashboardView()"
-      >
-        ← Back
-      </button>
+        <button
+          class="transaction-back"
+          onclick="showDashboardView()"
+          aria-label="Back to accounts"
+        >
+          ←
+        </button>
 
-      <h2>Transactions</h2>
-
-    </div>
-
-    <div class="transaction-container">
-
-      <div class="transaction-heading">
-
-        <h3>Transaction History</h3>
-
-        <p>
-          Review your account activity.
-        </p>
+        <h2>Transactions</h2>
 
       </div>
 
-      <input
-        type="search"
-        id="transactionSearch"
-        class="transaction-search"
-        placeholder="Search transactions..."
-      >
+      <div class="transaction-container">
 
-      <div class="transaction-filters">
+        <div class="transaction-controls">
 
-        <button
-          class="filter-btn active"
-          onclick="filterTransactions('All', this)"
-        >
-          All
-        </button>
+          <div class="transaction-heading">
+            <h3>Transaction History</h3>
+            <p>Illustrative account activity</p>
+          </div>
 
-        <button
-          class="filter-btn"
-          onclick="filterTransactions('Deposit', this)"
-        >
-          Deposits
-        </button>
+          <input
+            type="search"
+            id="transactionSearch"
+            class="transaction-search"
+            placeholder="Search transactions..."
+            autocomplete="off"
+          >
 
-        <button
-          class="filter-btn"
-          onclick="filterTransactions('Withdrawal', this)"
-        >
-          Withdrawals
-        </button>
+          <div class="transaction-filters">
 
-        <button
-          class="filter-btn"
-          onclick="filterTransactions('Transfer', this)"
-        >
-          Transfers
-        </button>
+            <button
+              class="filter-btn active"
+              data-filter="All"
+              onclick="filterTransactions('All', this)"
+            >All</button>
+
+            <button
+              class="filter-btn"
+              data-filter="Deposit"
+              onclick="filterTransactions('Deposit', this)"
+            >Deposits</button>
+
+            <button
+              class="filter-btn"
+              data-filter="Withdrawal"
+              onclick="filterTransactions('Withdrawal', this)"
+            >Withdrawals</button>
+
+            <button
+              class="filter-btn"
+              data-filter="Transfer"
+              onclick="filterTransactions('Transfer', this)"
+            >Transfers</button>
+
+          </div>
+
+        </div>
+
+        <div
+          id="transactionList"
+          class="transaction-list-scroll"
+        ></div>
 
       </div>
-
-      <div id="transactionList"></div>
-
     </div>
   `;
 
   const footer = main.querySelector(".wf-footer");
 
-  if (footer) {
-    main.insertBefore(section, footer);
-  } else {
-    main.appendChild(section);
-  }
+  main.insertBefore(section, footer);
 
   document
     .getElementById("transactionSearch")
@@ -542,15 +496,11 @@ function createTransactionSection() {
   renderTransactions();
 }
 
-
 /* ==========================================
-   TRANSACTION FILTER
+   FILTER TRANSACTIONS
 ========================================== */
 
-let currentFilter = "All";
-
 function filterTransactions(type, button) {
-
   currentFilter = type;
 
   document.querySelectorAll(".filter-btn").forEach(btn => {
@@ -562,13 +512,11 @@ function filterTransactions(type, button) {
   renderTransactions();
 }
 
-
 /* ==========================================
    RENDER TRANSACTIONS
 ========================================== */
 
 function renderTransactions() {
-
   const list = document.getElementById("transactionList");
 
   if (!list) return;
@@ -580,40 +528,30 @@ function renderTransactions() {
   let filtered = [...transactions];
 
   if (currentFilter !== "All") {
-    filtered = filtered.filter(transaction =>
-      transaction.type === currentFilter
-    );
+    filtered = filtered.filter(item => item.type === currentFilter);
   }
 
-  filtered = filtered.filter(transaction => {
-
-    return (
-      transaction.description.toLowerCase().includes(search) ||
-      transaction.type.toLowerCase().includes(search) ||
-      transaction.id.toLowerCase().includes(search)
-    );
-
-  });
+  filtered = filtered.filter(item => (
+    item.description.toLowerCase().includes(search) ||
+    item.type.toLowerCase().includes(search) ||
+    item.id.toLowerCase().includes(search)
+  ));
 
   if (!filtered.length) {
-
     list.innerHTML = `
       <div class="empty-transactions">
-        <p>No matching transactions found.</p>
+        No matching demo transactions found.
       </div>
     `;
-
     return;
   }
 
-  list.innerHTML = filtered.map(transaction => {
-
-    const positive = transaction.amount > 0;
+  list.innerHTML = filtered.map(item => {
+    const positive = item.amount > 0;
 
     const icon = positive ? "↓" : "↑";
 
     return `
-
       <div class="transaction-item">
 
         <div class="transaction-icon ${
@@ -624,17 +562,11 @@ function renderTransactions() {
 
         <div class="transaction-info">
 
-          <h4>
-            ${escapeHTML(transaction.description)}
-          </h4>
+          <h4>${escapeHTML(item.description)}</h4>
 
-          <p>
-            ${new Date(transaction.date).toLocaleString()}
-          </p>
+          <p>${new Date(item.date).toLocaleString()}</p>
 
-          <small>
-            ${escapeHTML(transaction.id)}
-          </small>
+          <small>${escapeHTML(item.id)}</small>
 
         </div>
 
@@ -642,36 +574,26 @@ function renderTransactions() {
 
           <strong class="${positive ? "green" : "red"}">
             ${positive ? "+" : "-"}
-            ${formatMoney(Math.abs(transaction.amount))}
+            ${formatMoney(Math.abs(item.amount))}
           </strong>
 
-          <small>
-            ${escapeHTML(transaction.status)}
-          </small>
+          <small>Demo</small>
 
         </div>
 
       </div>
-
     `;
-
   }).join("");
 }
-
 
 /* ==========================================
    ADD DEMO TRANSACTION
 ========================================== */
 
 function addDemoTransaction(type, description, amount) {
+  const allowed = ["Deposit", "Withdrawal", "Transfer"];
 
-  const validTypes = [
-    "Deposit",
-    "Withdrawal",
-    "Transfer"
-  ];
-
-  if (!validTypes.includes(type)) {
+  if (!allowed.includes(type)) {
     showMessage("Invalid transaction type");
     return;
   }
@@ -684,19 +606,12 @@ function addDemoTransaction(type, description, amount) {
   }
 
   const transaction = {
-
     id: "DEMO-" + Date.now(),
-
     type,
-
     description,
-
     amount: type === "Deposit" ? value : -value,
-
     date: new Date().toISOString(),
-
     status: "Demo"
-
   };
 
   transactions.unshift(transaction);
@@ -711,17 +626,14 @@ function addDemoTransaction(type, description, amount) {
   showMessage("Demo transaction added");
 }
 
-
 /* ==========================================
-   OPEN TRANSACTION PAGE
+   TRANSACTION NAVIGATION
 ========================================== */
 
 function showTransactions() {
-
   createTransactionSection();
 
   const main = document.querySelector(".main");
-
   const section = document.getElementById("transactionHistory");
 
   if (!main || !section) return;
@@ -729,17 +641,13 @@ function showTransactions() {
   closeMenu();
 
   Array.from(main.children).forEach(element => {
-
     if (element !== section) {
-
       if (element.dataset.previousDisplay === undefined) {
         element.dataset.previousDisplay = element.style.display;
       }
 
       element.style.display = "none";
-
     }
-
   });
 
   section.style.display = "block";
@@ -752,34 +660,21 @@ function showTransactions() {
   });
 }
 
-
-/* ==========================================
-   BACK TO DASHBOARD
-========================================== */
-
 function showDashboardView() {
-
   const main = document.querySelector(".main");
-
   const section = document.getElementById("transactionHistory");
 
   if (!main) return;
 
-  if (section) {
-    section.style.display = "none";
-  }
+  if (section) section.style.display = "none";
 
   Array.from(main.children).forEach(element => {
-
     if (element !== section) {
-
       element.style.display =
         element.dataset.previousDisplay ?? "";
 
       delete element.dataset.previousDisplay;
-
     }
-
   });
 
   window.scrollTo({
@@ -788,17 +683,13 @@ function showDashboardView() {
   });
 }
 
-
 /* ==========================================
-   LOGIN INPUT VALIDATION
+   LOGIN INPUTS
 ========================================== */
 
 function checkInputs() {
-
   const username = document.getElementById("username");
-
   const password = document.getElementById("password");
-
   const button = document.getElementById("loginBtn");
 
   if (!username || !password || !button) return;
@@ -809,21 +700,16 @@ function checkInputs() {
   );
 }
 
-
 /* ==========================================
    LOGIN
 ========================================== */
 
 function login() {
-
   const username = document.getElementById("username").value.trim();
-
   const password = document.getElementById("password").value.trim();
 
   const button = document.getElementById("loginBtn");
-
   const spinner = document.getElementById("spinner");
-
   const error = document.getElementById("errorBox");
 
   if (Date.now() < lockUntil) {
@@ -832,99 +718,71 @@ function login() {
   }
 
   error.textContent = "";
-
   button.disabled = true;
-
   button.textContent = "Signing in...";
-
   spinner.style.display = "block";
 
   setTimeout(() => {
-
-    const userFound = users.find(user =>
+    const validUser = users.find(user =>
       user.username === username &&
       user.password === password
     );
 
-    if (userFound) {
-
+    if (validUser) {
       attempts = 0;
 
       localStorage.removeItem("loginAttempts");
-
       localStorage.removeItem("lockUntil");
 
       localStorage.setItem("isLoggedIn", "true");
 
       showDashboard();
-
     } else {
-
       attempts++;
 
       localStorage.setItem("loginAttempts", attempts);
 
-      if (attempts >= maxAttempts) {
-
-        lockUntil = Date.now() + lockDuration;
+      if (attempts >= MAX_ATTEMPTS) {
+        lockUntil = Date.now() + LOCK_DURATION;
 
         localStorage.setItem("lockUntil", lockUntil);
 
         startCountdown();
-
       } else {
-
         error.textContent =
-          `Invalid credentials (${maxAttempts - attempts} tries left)`;
-
+          `Invalid credentials (${MAX_ATTEMPTS - attempts} tries left)`;
       }
 
       spinner.style.display = "none";
-
       button.textContent = "Sign In";
-
       button.disabled = false;
-
     }
-
   }, 1200);
 }
-
 
 /* ==========================================
    PASSWORD VISIBILITY
 ========================================== */
 
 function togglePassword() {
-
   const input = document.getElementById("password");
-
   const text = document.getElementById("toggleText");
 
   if (input.type === "password") {
-
     input.type = "text";
-
     text.textContent = "Hide";
-
   } else {
-
     input.type = "password";
-
     text.textContent = "Show";
-
   }
 }
-
 
 /* ==========================================
    LOGIN COUNTDOWN
 ========================================== */
 
 function startCountdown() {
-
   const error = document.getElementById("errorBox");
-
   const button = document.getElementById("loginBtn");
 
   clearInterval(countdownInterval);
@@ -932,66 +790,49 @@ function startCountdown() {
   button.disabled = true;
 
   countdownInterval = setInterval(() => {
-
     const remaining = Math.ceil(
       (lockUntil - Date.now()) / 1000
     );
 
     if (remaining <= 0) {
-
       clearInterval(countdownInterval);
 
       attempts = 0;
-
       lockUntil = 0;
 
       localStorage.removeItem("loginAttempts");
-
       localStorage.removeItem("lockUntil");
 
       error.textContent = "";
-
       button.disabled = false;
-
     } else {
-
       error.textContent =
         `Too many attempts. Try again in ${remaining}s`;
-
     }
-
   }, 1000);
 }
-
 
 /* ==========================================
    SHOW DASHBOARD
 ========================================== */
 
 function showDashboard() {
-
   document.getElementById("loginPage").style.display = "none";
-
   document.getElementById("app").style.display = "block";
 
   createCheckingChart();
-
   createSavingsChart();
-
   createTransactionSection();
 }
-
 
 /* ==========================================
    LOGOUT
 ========================================== */
 
 function logout() {
-
   localStorage.removeItem("isLoggedIn");
 
   clearInterval(countdownInterval);
-
   closeMenu();
 
   const app = document.getElementById("app");
@@ -999,43 +840,33 @@ function logout() {
   app.style.opacity = "0";
 
   setTimeout(() => {
-
     app.style.display = "none";
 
     document.getElementById("loginPage").style.display = "flex";
 
     document.getElementById("username").value = "";
-
     document.getElementById("password").value = "";
 
     document.getElementById("loginBtn").disabled = true;
-
     document.getElementById("loginBtn").textContent = "Sign In";
 
     document.getElementById("errorBox").textContent = "";
-
     document.getElementById("spinner").style.display = "none";
 
     app.style.opacity = "1";
 
     setGreeting();
-
   }, 300);
 }
 
-
 /* ==========================================
-   INITIALIZE APPLICATION
+   INITIALIZATION
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
-
   setGreeting();
 
   if (localStorage.getItem("isLoggedIn") === "true") {
-
     showDashboard();
-
   }
-
 });
