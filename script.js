@@ -338,7 +338,7 @@ function createSavingsChart() {
 ========================================== */
 
 const transactionData = [
-  ["Deposit", "Sample account deposit", 4500, "2026-10-31T09:15:00"],
+  ["Deposit", "Sample account deposit", 4500, "2026-11-01T05:16:09"],
   ["Withdrawal", "Sample ATM withdrawal", -300, "2026-10-30T14:25:00"],
   ["Transfer", "Sample outgoing transfer", -750, "2026-10-30T11:40:00"],
   ["Deposit", "Sample account credit", 1200, "2026-10-29T16:20:00"],
