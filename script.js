@@ -2,34 +2,52 @@
    BANKING DASHBOARD DEMO
 ========================================== */
 
-const DEMO_USERS = [
-  { username: "demo", password: "demo1234" }
+// DEMO LOGIN
+const users = [
+  {
+    username: "demo",
+    password: "demo1234"
+  }
 ];
 
-const MAX_ATTEMPTS = 3;
-const LOCK_DURATION = 30000;
+const maxAttempts = 3;
+const lockDuration = 30000;
 
 let attempts = Number(localStorage.getItem("loginAttempts")) || 0;
 let lockUntil = Number(localStorage.getItem("lockUntil")) || 0;
+
 let countdownInterval;
-let checkingChart;
-let savingsChart;
+let toastTimeout;
+
+let checkingChart = null;
+let savingsChart = null;
 
 
 /* ==========================================
-   HELPERS
+   HELPER FUNCTIONS
 ========================================== */
 
-const formatMoney = (amount) =>
-  new Intl.NumberFormat("en-US", {
+function formatMoney(amount) {
+  return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD"
   }).format(amount);
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[char]);
+}
 
 function getStoredData(key, fallback) {
   try {
-    const value = localStorage.getItem(key);
-    return value ? JSON.parse(value) : fallback;
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
   } catch {
     return fallback;
   }
@@ -37,10 +55,8 @@ function getStoredData(key, fallback) {
 
 
 /* ==========================================
-   TOAST NOTIFICATIONS
+   TOAST NOTIFICATION
 ========================================== */
-
-let toastTimeout;
 
 function showMessage(message = "Service not available") {
   const toast = document.getElementById("toast");
@@ -62,6 +78,7 @@ function showMessage(message = "Service not available") {
     setTimeout(() => {
       toast.style.display = "none";
     }, 300);
+
   }, 2500);
 }
 
@@ -83,10 +100,10 @@ function setGreeting() {
     greeting = "Good evening";
   }
 
-  const element = document.getElementById("greeting");
+  const greetingElement = document.getElementById("greeting");
 
-  if (element) {
-    element.textContent = greeting;
+  if (greetingElement) {
+    greetingElement.textContent = greeting;
   }
 }
 
@@ -99,10 +116,13 @@ function toggleMenu() {
   const menu = document.getElementById("mobileMenu");
   const overlay = document.getElementById("overlay");
 
-  if (!menu || !overlay) return;
-
   menu.classList.toggle("active");
   overlay.classList.toggle("active");
+}
+
+function closeMenu() {
+  document.getElementById("mobileMenu")?.classList.remove("active");
+  document.getElementById("overlay")?.classList.remove("active");
 }
 
 
@@ -123,11 +143,10 @@ function handleAction() {
 
 
 /* ==========================================
-   DEMO CHART DATA
+   CHART DATA
 ========================================== */
 
-// Fixed illustrative historical data.
-// These values are not actual bank records.
+// Illustrative checking history
 
 const checkingHistory = [
   { day: "Mon", balance: 6100000 },
@@ -136,8 +155,10 @@ const checkingHistory = [
   { day: "Thu", balance: 6250000 },
   { day: "Fri", balance: 6200000 },
   { day: "Sat", balance: 6280000 },
-  { day: "Sun", balance: 6300817 }
+  { day: "Sun", balance: 6300817.13 }
 ];
+
+// Illustrative savings history
 
 const savingsHistory = [
   9050, 9080, 9020, 9150, 9200,
@@ -145,12 +166,12 @@ const savingsHistory = [
   9400, 9380, 9450, 9500, 9480,
   9550, 9600, 9580, 9650, 9700,
   9680, 9750, 9800, 9780, 9850,
-  9900, 9950, 10000, 10200, 10817
+  9900, 9950, 10000, 10200, 10817.27
 ];
 
 
 /* ==========================================
-   CHART CONFIGURATION
+   CHECKING CHART
 ========================================== */
 
 function createCheckingChart() {
@@ -166,8 +187,8 @@ function createCheckingChart() {
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 250);
 
-  gradient.addColorStop(0, "rgba(166, 25, 46, 0.25)");
-  gradient.addColorStop(1, "rgba(166, 25, 46, 0.01)");
+  gradient.addColorStop(0, "rgba(166,25,46,0.24)");
+  gradient.addColorStop(1, "rgba(166,25,46,0.01)");
 
   checkingChart = new Chart(ctx, {
     type: "line",
@@ -176,7 +197,7 @@ function createCheckingChart() {
       labels: checkingHistory.map(item => item.day),
 
       datasets: [{
-        label: "Illustrative balance",
+        label: "Demo checking balance",
 
         data: checkingHistory.map(item => item.balance),
 
@@ -201,7 +222,9 @@ function createCheckingChart() {
     options: {
       responsive: true,
 
-      maintainAspectRatio: false,
+      maintainAspectRatio: true,
+
+      aspectRatio: 2.1,
 
       interaction: {
         intersect: false,
@@ -220,9 +243,7 @@ function createCheckingChart() {
 
         tooltip: {
           backgroundColor: "#252d38",
-
           padding: 12,
-
           displayColors: false,
 
           callbacks: {
@@ -288,8 +309,8 @@ function createSavingsChart() {
 
   const gradient = ctx.createLinearGradient(0, 0, 0, 100);
 
-  gradient.addColorStop(0, "rgba(105, 180, 65, 0.25)");
-  gradient.addColorStop(1, "rgba(105, 180, 65, 0.01)");
+  gradient.addColorStop(0, "rgba(121,189,69,0.25)");
+  gradient.addColorStop(1, "rgba(121,189,69,0.01)");
 
   savingsChart = new Chart(ctx, {
     type: "line",
@@ -298,7 +319,7 @@ function createSavingsChart() {
       labels: savingsHistory.map((_, index) => `Day ${index + 1}`),
 
       datasets: [{
-        label: "Illustrative savings balance",
+        label: "Demo savings balance",
 
         data: savingsHistory,
 
@@ -343,13 +364,11 @@ function createSavingsChart() {
 
           backgroundColor: "#252d38",
 
+          padding: 10,
+
           displayColors: false,
 
           callbacks: {
-            title(items) {
-              return items[0].label;
-            },
-
             label(context) {
               return formatMoney(context.raw);
             }
@@ -372,7 +391,7 @@ function createSavingsChart() {
 
 
 /* ==========================================
-   DEMO TRANSACTION DATA
+   DEMO TRANSACTIONS
 ========================================== */
 
 const initialTransactions = [
@@ -420,54 +439,101 @@ let transactions = getStoredData(
 
 
 /* ==========================================
-   TRANSACTION HISTORY UI
+   TRANSACTION PAGE
 ========================================== */
 
 function createTransactionSection() {
+
   const main = document.querySelector(".main");
 
-  if (!main || document.getElementById("transactionHistory")) return;
+  if (!main) return;
+
+  if (document.getElementById("transactionHistory")) return;
 
   const section = document.createElement("section");
 
   section.id = "transactionHistory";
 
+  section.style.display = "none";
+
   section.innerHTML = `
-    <div style="
-      background:#fff;
-      padding:20px;
-      border-radius:12px;
-      margin-top:25px;
-      border:1px solid #e8ebef;
-    ">
 
-      <h3 style="margin-top:0;color:#8c1d30">
-        Demo Transaction History
-      </h3>
+    <div class="transaction-header">
 
-      <p style="font-size:12px;color:#89919c">
-        Illustrative transactions for this banking demo.
-      </p>
+      <button
+        class="transaction-back"
+        onclick="showDashboardView()"
+      >
+        ← Back
+      </button>
+
+      <h2>Transactions</h2>
+
+    </div>
+
+    <div class="transaction-container">
+
+      <div class="transaction-heading">
+
+        <h3>Transaction History</h3>
+
+        <p>
+          Review your account activity.
+        </p>
+
+      </div>
 
       <input
-        id="transactionSearch"
         type="search"
+        id="transactionSearch"
+        class="transaction-search"
         placeholder="Search transactions..."
-        style="
-          width:100%;
-          padding:12px;
-          border:1px solid #ddd;
-          border-radius:7px;
-          margin:12px 0;
-        "
       >
+
+      <div class="transaction-filters">
+
+        <button
+          class="filter-btn active"
+          onclick="filterTransactions('All', this)"
+        >
+          All
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterTransactions('Deposit', this)"
+        >
+          Deposits
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterTransactions('Withdrawal', this)"
+        >
+          Withdrawals
+        </button>
+
+        <button
+          class="filter-btn"
+          onclick="filterTransactions('Transfer', this)"
+        >
+          Transfers
+        </button>
+
+      </div>
 
       <div id="transactionList"></div>
 
     </div>
   `;
 
-  main.appendChild(section);
+  const footer = main.querySelector(".wf-footer");
+
+  if (footer) {
+    main.insertBefore(section, footer);
+  } else {
+    main.appendChild(section);
+  }
 
   document
     .getElementById("transactionSearch")
@@ -478,10 +544,31 @@ function createTransactionSection() {
 
 
 /* ==========================================
+   TRANSACTION FILTER
+========================================== */
+
+let currentFilter = "All";
+
+function filterTransactions(type, button) {
+
+  currentFilter = type;
+
+  document.querySelectorAll(".filter-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  renderTransactions();
+}
+
+
+/* ==========================================
    RENDER TRANSACTIONS
 ========================================== */
 
 function renderTransactions() {
+
   const list = document.getElementById("transactionList");
 
   if (!list) return;
@@ -490,78 +577,85 @@ function renderTransactions() {
     document.getElementById("transactionSearch")?.value || ""
   ).toLowerCase();
 
-  const filtered = transactions.filter(transaction => {
+  let filtered = [...transactions];
+
+  if (currentFilter !== "All") {
+    filtered = filtered.filter(transaction =>
+      transaction.type === currentFilter
+    );
+  }
+
+  filtered = filtered.filter(transaction => {
+
     return (
       transaction.description.toLowerCase().includes(search) ||
       transaction.type.toLowerCase().includes(search) ||
       transaction.id.toLowerCase().includes(search)
     );
+
   });
 
   if (!filtered.length) {
+
     list.innerHTML = `
-      <p style="text-align:center;color:#89919c;padding:20px">
-        No matching demo transactions found.
-      </p>
+      <div class="empty-transactions">
+        <p>No matching transactions found.</p>
+      </div>
     `;
 
     return;
   }
 
   list.innerHTML = filtered.map(transaction => {
+
     const positive = transaction.amount > 0;
 
+    const icon = positive ? "↓" : "↑";
+
     return `
-      <div style="
-        display:flex;
-        justify-content:space-between;
-        align-items:center;
-        gap:10px;
-        padding:15px 0;
-        border-bottom:1px solid #edf0f3;
-      ">
 
-        <div>
-          <strong style="font-size:13px">
+      <div class="transaction-item">
+
+        <div class="transaction-icon ${
+          positive ? "deposit-icon" : "withdrawal-icon"
+        }">
+          ${icon}
+        </div>
+
+        <div class="transaction-info">
+
+          <h4>
             ${escapeHTML(transaction.description)}
-          </strong>
+          </h4>
 
-          <p style="font-size:11px;color:#89919c;margin:5px 0">
+          <p>
             ${new Date(transaction.date).toLocaleString()}
           </p>
 
-          <small style="color:#89919c">
+          <small>
             ${escapeHTML(transaction.id)}
           </small>
+
         </div>
 
-        <strong style="
-          color:${positive ? "#18864b" : "#c62828"};
-          font-size:13px;
-          white-space:nowrap;
-        ">
-          ${positive ? "+" : "-"}
-          ${formatMoney(Math.abs(transaction.amount))}
-        </strong>
+        <div class="transaction-amount">
+
+          <strong class="${positive ? "green" : "red"}">
+            ${positive ? "+" : "-"}
+            ${formatMoney(Math.abs(transaction.amount))}
+          </strong>
+
+          <small>
+            ${escapeHTML(transaction.status)}
+          </small>
+
+        </div>
 
       </div>
+
     `;
+
   }).join("");
-}
-
-
-/* ==========================================
-   HTML ESCAPE
-========================================== */
-
-function escapeHTML(value) {
-  return String(value).replace(/[&<>"']/g, character => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;"
-  })[character]);
 }
 
 
@@ -570,7 +664,12 @@ function escapeHTML(value) {
 ========================================== */
 
 function addDemoTransaction(type, description, amount) {
-  const validTypes = ["Deposit", "Withdrawal", "Transfer"];
+
+  const validTypes = [
+    "Deposit",
+    "Withdrawal",
+    "Transfer"
+  ];
 
   if (!validTypes.includes(type)) {
     showMessage("Invalid transaction type");
@@ -585,6 +684,7 @@ function addDemoTransaction(type, description, amount) {
   }
 
   const transaction = {
+
     id: "DEMO-" + Date.now(),
 
     type,
@@ -596,6 +696,7 @@ function addDemoTransaction(type, description, amount) {
     date: new Date().toISOString(),
 
     status: "Demo"
+
   };
 
   transactions.unshift(transaction);
@@ -612,12 +713,92 @@ function addDemoTransaction(type, description, amount) {
 
 
 /* ==========================================
-   LOGIN
+   OPEN TRANSACTION PAGE
+========================================== */
+
+function showTransactions() {
+
+  createTransactionSection();
+
+  const main = document.querySelector(".main");
+
+  const section = document.getElementById("transactionHistory");
+
+  if (!main || !section) return;
+
+  closeMenu();
+
+  Array.from(main.children).forEach(element => {
+
+    if (element !== section) {
+
+      if (element.dataset.previousDisplay === undefined) {
+        element.dataset.previousDisplay = element.style.display;
+      }
+
+      element.style.display = "none";
+
+    }
+
+  });
+
+  section.style.display = "block";
+
+  renderTransactions();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* ==========================================
+   BACK TO DASHBOARD
+========================================== */
+
+function showDashboardView() {
+
+  const main = document.querySelector(".main");
+
+  const section = document.getElementById("transactionHistory");
+
+  if (!main) return;
+
+  if (section) {
+    section.style.display = "none";
+  }
+
+  Array.from(main.children).forEach(element => {
+
+    if (element !== section) {
+
+      element.style.display =
+        element.dataset.previousDisplay ?? "";
+
+      delete element.dataset.previousDisplay;
+
+    }
+
+  });
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
+
+
+/* ==========================================
+   LOGIN INPUT VALIDATION
 ========================================== */
 
 function checkInputs() {
+
   const username = document.getElementById("username");
+
   const password = document.getElementById("password");
+
   const button = document.getElementById("loginBtn");
 
   if (!username || !password || !button) return;
@@ -629,7 +810,12 @@ function checkInputs() {
 }
 
 
+/* ==========================================
+   LOGIN
+========================================== */
+
 function login() {
+
   const username = document.getElementById("username").value.trim();
 
   const password = document.getElementById("password").value.trim();
@@ -648,20 +834,24 @@ function login() {
   error.textContent = "";
 
   button.disabled = true;
+
   button.textContent = "Signing in...";
 
   spinner.style.display = "block";
 
   setTimeout(() => {
-    const validUser = DEMO_USERS.find(user =>
+
+    const userFound = users.find(user =>
       user.username === username &&
       user.password === password
     );
 
-    if (validUser) {
+    if (userFound) {
+
       attempts = 0;
 
       localStorage.removeItem("loginAttempts");
+
       localStorage.removeItem("lockUntil");
 
       localStorage.setItem("isLoggedIn", "true");
@@ -669,20 +859,24 @@ function login() {
       showDashboard();
 
     } else {
+
       attempts++;
 
       localStorage.setItem("loginAttempts", attempts);
 
-      if (attempts >= MAX_ATTEMPTS) {
-        lockUntil = Date.now() + LOCK_DURATION;
+      if (attempts >= maxAttempts) {
+
+        lockUntil = Date.now() + lockDuration;
 
         localStorage.setItem("lockUntil", lockUntil);
 
         startCountdown();
 
       } else {
+
         error.textContent =
-          `Invalid credentials (${MAX_ATTEMPTS - attempts} tries left)`;
+          `Invalid credentials (${maxAttempts - attempts} tries left)`;
+
       }
 
       spinner.style.display = "none";
@@ -702,16 +896,23 @@ function login() {
 ========================================== */
 
 function togglePassword() {
+
   const input = document.getElementById("password");
 
   const text = document.getElementById("toggleText");
 
   if (input.type === "password") {
+
     input.type = "text";
+
     text.textContent = "Hide";
+
   } else {
+
     input.type = "password";
+
     text.textContent = "Show";
+
   }
 }
 
@@ -721,24 +922,31 @@ function togglePassword() {
 ========================================== */
 
 function startCountdown() {
+
   const error = document.getElementById("errorBox");
 
   const button = document.getElementById("loginBtn");
 
   clearInterval(countdownInterval);
 
+  button.disabled = true;
+
   countdownInterval = setInterval(() => {
+
     const remaining = Math.ceil(
       (lockUntil - Date.now()) / 1000
     );
 
     if (remaining <= 0) {
+
       clearInterval(countdownInterval);
 
       attempts = 0;
+
       lockUntil = 0;
 
       localStorage.removeItem("loginAttempts");
+
       localStorage.removeItem("lockUntil");
 
       error.textContent = "";
@@ -746,10 +954,10 @@ function startCountdown() {
       button.disabled = false;
 
     } else {
+
       error.textContent =
         `Too many attempts. Try again in ${remaining}s`;
 
-      button.disabled = true;
     }
 
   }, 1000);
@@ -757,10 +965,11 @@ function startCountdown() {
 
 
 /* ==========================================
-   DASHBOARD
+   SHOW DASHBOARD
 ========================================== */
 
 function showDashboard() {
+
   document.getElementById("loginPage").style.display = "none";
 
   document.getElementById("app").style.display = "block";
@@ -778,15 +987,19 @@ function showDashboard() {
 ========================================== */
 
 function logout() {
+
   localStorage.removeItem("isLoggedIn");
 
   clearInterval(countdownInterval);
+
+  closeMenu();
 
   const app = document.getElementById("app");
 
   app.style.opacity = "0";
 
   setTimeout(() => {
+
     app.style.display = "none";
 
     document.getElementById("loginPage").style.display = "flex";
@@ -812,7 +1025,7 @@ function logout() {
 
 
 /* ==========================================
-   INITIALIZATION
+   INITIALIZE APPLICATION
 ========================================== */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -820,7 +1033,9 @@ document.addEventListener("DOMContentLoaded", () => {
   setGreeting();
 
   if (localStorage.getItem("isLoggedIn") === "true") {
+
     showDashboard();
+
   }
 
 });
