@@ -1,84 +1,84 @@
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f5f7fa;
+/* =================================
+   GLOBAL STYLES
+================================= */
+
+* {
+  box-sizing: border-box;
 }
 
-/* 🔴 TOPBAR */
-.topbar {
-  background: #b31b1b;
-  position: relative;
-  height: 60px;
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f3f5f8;
+  color: #202833;
+  -webkit-font-smoothing: antialiased;
 }
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+/* =================================
+   HEADER
+================================= */
+
+.topbar {
+  background: linear-gradient(110deg, #761525, #a6192e);
+  position: relative;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+
 .logo {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  
-  font-weight: bold;
-  font-size: 14px;
+  font-weight: 800;
+  font-size: 15px;
   text-align: center;
   line-height: 1.1;
-  letter-spacing: 1px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-
-  background: linear-gradient(
-    180deg,
-    #fff2a6 0%,   /* light shine */
-    #ffcc00 40%,  /* main gold */
-    #cc9900 100%  /* deep gold */
-  );
-
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  text-shadow:
-    0 1px 1px rgba(0,0,0,0.4),
-    0 0 2px rgba(255,204,0,0.5);
+  color: #ffda76;
 }
 
 .menu-btn {
-  font-size: 26px;
+  font-size: 28px;
   color: white;
   font-weight: bold;
   cursor: pointer;
   position: absolute;
-  right: 15px;
+  right: 18px;
   top: 50%;
   transform: translateY(-50%);
 }
 
-/* OVERLAY (dark background) */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  pointer-events: none;
-  z-index: 90;
-}
+/* =================================
+   MOBILE NAVIGATION
+================================= */
 
-/* SHOW OVERLAY */
-.overlay.active {
-  display: block;
-  pointer-events: auto;
-}
-
-/* 🔴 MOBILE MENU */
 .mobile-menu {
   position: fixed;
   top: 0;
-  right: -100%;   
-  width: 260px;
+  right: -110%;
+  width: 280px;
+  max-width: 85%;
   height: 100%;
-  background: white;
-  padding: 20px;
+  background: #fff;
+  padding: 25px;
   transition: right 0.3s ease;
   z-index: 100;
+  box-shadow: -5px 0 25px rgba(0,0,0,0.1);
 }
 
 .mobile-menu.active {
@@ -87,293 +87,441 @@ body {
 
 .mobile-menu a {
   display: block;
-  margin: 15px 0;
-  font-size: 16px;
+  margin: 22px 0;
+  font-size: 15px;
+  color: #303946;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.mobile-menu a:hover {
+  color: #a6192e;
 }
 
 .mobile-menu hr {
-  margin: 15px 0;
+  border: none;
+  border-top: 1px solid #eee;
 }
 
 .logout {
-  color: red;
+  color: #c62828 !important;
 }
 
-/* 🔴 MAIN */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  display: none;
+  z-index: 90;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* =================================
+   MAIN CONTENT
+================================= */
+
 .main {
-  padding: 15px;
+  width: 100%;
+  max-width: 950px;
+  margin: auto;
+  padding: 24px 18px;
 }
 
 .small {
-  color: gray;
-  font-size: 20px;
+  color: #89919c;
+  font-size: 13px;
+  margin-bottom: 5px;
 }
 
-/* ACTION */
+.main h2 {
+  font-size: 25px;
+  font-weight: 600;
+  margin: 5px 0 20px;
+  color: #202833;
+}
+
+/* =================================
+   ACTION SECTION
+================================= */
+
 .action-box {
   display: flex;
-  gap: 10px;
-  margin: 15px 0;
+  gap: 12px;
+  margin: 22px 0 30px;
 }
 
 .action-box select {
   flex: 1;
-  padding: 10px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  background: #f3f3f3;
+  min-width: 0;
+  padding: 13px;
+  border-radius: 7px;
+  border: 1px solid #dce1e8;
+  background: #fff;
+  color: #394451;
+  outline: none;
+}
+
+.action-box select:focus {
+  border-color: #a6192e;
 }
 
 .action-box button {
-  padding: 10px 15px;
-  background: #b31b1b;
+  padding: 12px 25px;
+  background: #a6192e;
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 7px;
+  font-weight: 600;
 }
 
-/* SECTION TITLE */
-.section-title {
-  margin-top: 20px;
+.action-box button:hover {
+  background: #761525;
 }
 
+/* =================================
+   SECTION TITLES
+================================= */
 
-
-/* 📱 MOBILE FIX */
-@media (max-width: 768px) {
-  .card.full {
-    flex-direction: column;
-  }
-
-  .left, .right {
-    width: 100%;
-  }
+.wf-section-title {
+  color: #8c1d30;
+  font-size: 17px;
+  font-weight: 700;
+  margin: 28px 0 14px;
 }
 
-.label {
-  color: gray;
-  font-size: 12px;
-}
+/* =================================
+   ACCOUNT LINKS
+================================= */
 
-.sub {
-  font-size: 12px;
-  color: #555;
-}
-
-/* CARD */
-.wf-card {
-  background: #fff;
-  border: 1px solid #e3e3e3;
-  border-radius: 2px;
-  padding: 14px;
-  margin-bottom: 15px;
-  box-shadow: none;
+.wf-account-link {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  margin: 12px 2px;
+  color: #3c4652;
 }
 
 .wf-account-link a {
-  color: #5ea9c6;
+  color: #397f9d;
+  text-decoration: none;
+}
+
+.wf-account-link a:hover {
   text-decoration: underline;
 }
 
-/* TITLE */
+.badge {
+  background: #a6192e;
+  color: white;
+  padding: 4px 9px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+/* =================================
+   ACCOUNT CARDS
+================================= */
+
+.wf-card {
+  background: #fff;
+  border: 1px solid #e8ebef;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 14px rgba(25,40,60,0.045);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.wf-card:hover {
+  box-shadow: 0 7px 22px rgba(25,40,60,0.075);
+}
+
 .wf-title {
   font-size: 11px;
-  color: gray;
-  letter-spacing: 1px;
+  color: #89919c;
+  letter-spacing: 1.2px;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
+
+.wf-amount {
+  font-size: clamp(25px, 5vw, 32px);
+  font-weight: 600;
+  color: #202833;
+  margin: 5px 0;
+  letter-spacing: -0.8px;
+  overflow-wrap: anywhere;
+}
+
 .wf-decimal {
-  font-size: 0.45em;
+  font-size: 0.48em;
   vertical-align: top;
   margin-left: 2px;
 }
 
-/* BIG AMOUNT */
-.wf-amount {
-  font-size: 25px;
-  margin: 5px 0;
-}
-
-/* SUB TEXT */
 .wf-sub {
   font-size: 12px;
-  color: gray;
+  color: #89919c;
+  margin-top: 8px;
 }
 
-/* ROW */
+/* =================================
+   TRANSACTION ROW
+================================= */
+
 .wf-row {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  gap: 10px;
   font-size: 12px;
-  margin-top: 10px;
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid #edf0f3;
 }
 
-/* BUTTON */
+.red {
+  color: #c62828;
+  font-weight: 600;
+}
+
+.green {
+  color: #18864b;
+  font-weight: 600;
+}
+
+/* =================================
+   ACCOUNT BUTTONS
+================================= */
+
 .wf-btn {
   width: 100%;
-  margin-top: 10px;
-  padding: 10px;
-  background: #b31b1b;
+  margin-top: 17px;
+  padding: 12px;
+  background: #a6192e;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-/* CREDIT BAR */
-.credit-bar {
-  height: 8px;
-  background: #ddd;
-  border-radius: 5px;
-  margin-top: 10px;
-  overflow: hidden;
+.wf-btn:hover {
+  background: #761525;
+  transform: translateY(-1px);
 }
 
-.credit-bar {
-  display: flex;
-  height: 10px;
-  margin-top: 10px;
+.wf-btn-small-center {
+  max-width: 170px;
+  display: block;
+  margin: 18px auto 0;
 }
 
-.credit-bar .used {
-  width: 40%;
-  background: #e21b23;
+.wf-pay-btn {
+  width: 120px;
+  padding: 9px;
 }
 
-.credit-bar::after {
-  content: "";
-  width: 60%;
-  background: #7bd51d;
-}
+/* =================================
+   CHARTS
+================================= */
 
-/* COLORS */
-.green { color: green; }
-.red { color: red; }
-
-/* 🔥 SECTION TITLE */
-.wf-section-title {
-  color: #b31b1b;
+#lineChart {
+  width: 100% !important;
+  max-height: 190px;
   margin-top: 20px;
 }
 
-/* 🔥 ACCOUNT LINK */
-.wf-account-link {
-  display: flex;
-  justify-content: space-between;
-  font-size: 13px;
-  margin: 8px 0;
+#savingsChart {
+  width: 100% !important;
+  height: 75px !important;
+  margin-top: 18px;
 }
 
-/* 🔥 BADGE */
-.badge {
-  background: #c8102e;
-  color: white;
-  padding: 2px 8px;
-  border-radius: 3px;
-  font-size: 11px;
-  font-weight: bold;
-}
+/* =================================
+   CREDIT ACCOUNT
+================================= */
 
-/* 🔥 CREDIT TOP */
 .credit-top {
   display: flex;
-  gap: 10px;
+  gap: 18px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
-.credit-top img {
-  border-radius: 4px;
+.credit-card-img {
+  width: 125px;
+  height: 82px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 3px 9px rgba(0,0,0,0.15);
 }
 
-/* 🔥 SMALL BUTTON */
-.wf-btn.small {
-  width: auto;
-  padding: 6px 10px;
-  margin-top: 5px;
+.credit-top-info {
+  flex: 1;
 }
 
-/* 🔥 LIMIT TEXT */
+.credit-due {
+  font-size: 15px;
+  font-weight: 700;
+  margin: 0 0 5px;
+}
+
+.credit-due-sub {
+  font-size: 12px;
+  color: #89919c;
+  margin: 0;
+}
+
+.credit-balance-title {
+  margin-top: 20px;
+}
+
+.credit-bar {
+  display: flex;
+  height: 9px;
+  background: #e7e9ed;
+  border-radius: 20px;
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+.credit-bar-used {
+  width: 40%;
+  background: #c62828;
+}
+
+.credit-bar-available {
+  width: 60%;
+  background: #79bd45;
+}
+
 .limit {
   font-size: 11px;
-  color: gray;
-  margin-top: 5px;
+  color: #89919c;
+  margin-top: 9px;
 }
 
-#savingsChart {
-  height: 60px !important;
-  width: 100% !important;
+.wf-transaction-row {
+  gap: 8px;
+  flex-wrap: wrap;
 }
 
+.wf-row-label,
+.wf-row-mid,
+.wf-row-right {
+  font-size: 10px;
+}
+
+/* =================================
+   FOOTER
+================================= */
 
 .wf-footer {
   text-align: center;
   font-size: 10px;
-  color: #666;
-  margin-top: 20px;
+  color: #89919c;
+  margin-top: 35px;
+  padding: 25px 10px;
+  border-top: 1px solid #e5e8ed;
+}
+
+.wf-footer-links {
+  margin: 12px 0;
+  line-height: 2;
 }
 
 .wf-footer a {
-  color: #666;
+  color: #707b88;
   text-decoration: none;
+}
+
+.wf-footer a:hover {
+  color: #a6192e;
 }
 
 .wf-footer span {
   margin: 0 6px;
 }
 
-.credit-card-img {
-  width: 120px;
-  height: 75px;
-  object-fit: cover;
-  border-radius: 6px;
-
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+.wf-footer-copy {
+  margin-top: 18px;
 }
+
+/* =================================
+   TOAST NOTIFICATION
+================================= */
 
 #toast {
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  background: #b31b1b;
+  transform: translate(-50%, -40%);
+  background: #29313d;
   color: white;
-  padding: 12px 20px;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 15px 23px;
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 500;
   display: none;
-  z-index: 9999;  
+  opacity: 0;
+  z-index: 9999;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  text-align: center;
+  max-width: 90%;
 }
 
 #toast.show {
+  display: block;
   opacity: 1;
-  transform: translateX(-50%) translateY(0);
+  transform: translate(-50%, -50%);
 }
 
+/* =================================
+   LOGIN PAGE
+================================= */
 
 #loginPage {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #f5f7fa;
 }
 
 .login-box {
-  width: 100%;
-  max-width: 320px;
+  width: calc(100% - 40px);
+  max-width: 360px;
   margin: auto;
+  padding: 30px 0;
 }
 
 .login-box h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin-bottom: 28px;
+  text-align: center;
+  font-weight: 400;
 }
 
 .login-box input {
   width: 100%;
   padding: 16px;
-  margin-bottom: 15px;
-  border-radius: 30px;
-  border: 1px solid #aaa;
-  font-size: 16px;
-  box-sizing: border-box;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  border: 1px solid #d5dbe2;
+  background: white;
+  font-size: 15px;
+  outline: none;
+}
+
+.login-box input:focus {
+  border-color: #a6192e;
+  box-shadow: 0 0 0 3px rgba(166,25,46,0.08);
 }
 
 .password-box {
@@ -383,68 +531,107 @@ body {
 .password-box span {
   position: absolute;
   right: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #2c2c8a;
+  top: 25%;
+  color: #8b1e32;
   cursor: pointer;
-  font-weight: 500;
-  text-decoration: underline;
+  font-size: 13px;
+  font-weight: 600;
 }
 
-#loginBtn{
-  width:100%;
+#loginBtn {
+  width: 100%;
   padding: 15px;
-  border-radius: 30px;
+  border-radius: 8px;
   border: none;
-  background: #b31b1b;
+  background: #a6192e;
   color: white;
-  font-size: 16px;
-  transition: 0.3s;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 #loginBtn:disabled {
-  background: #ccc;
+  background: #c6cbd1;
   cursor: not-allowed;
-}
-
-#greeting {
-  font-size: 34px;
-  margin-bottom: 22px;
-  font-weight: 300;
-  text-align: center;
-  color: #111;
-  letter-spacing: 0.5px;
-  font-family: -apple-system,
-  BlinkMacSystemFont,
-  "Segoe UI",
-  Roboto,
-  Helvetica,
-  Arial,
-  sans-serif;
 }
 
 .error {
   color: #b31b1b;
   font-size: 13px;
-  margin-top: 10px;
+  margin-top: 12px;
+  text-align: center;
 }
 
 .spinner {
   width: 30px;
   height: 30px;
-  border: 4px solid #ccc;
-  border-top: 4px solid #b31b1b;
+  border: 4px solid #ddd;
+  border-top: 4px solid #a6192e;
   border-radius: 50%;
-  margin: 10px auto;
+  margin: 15px auto;
   display: none;
-
   animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
-#app {
-  transition: opacity 0.3s ease;
+#greeting {
+  font-size: 34px;
+  margin-bottom: 25px;
+  font-weight: 300;
+  text-align: center;
+  color: #202833;
+}
+
+/* =================================
+   RESPONSIVE DESIGN
+================================= */
+
+@media (min-width: 768px) {
+  .main {
+    padding: 35px 25px;
   }
+
+  .wf-card {
+    padding: 25px;
+  }
+
+  .main h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .main {
+    padding: 18px 13px;
+  }
+
+  .wf-card {
+    padding: 16px;
+    border-radius: 10px;
+  }
+
+  .wf-amount {
+    font-size: 25px;
+  }
+
+  .credit-card-img {
+    width: 105px;
+    height: 70px;
+  }
+
+  .credit-top {
+    gap: 12px;
+  }
+
+  .wf-row {
+    font-size: 11px;
+  }
+
+  .wf-footer-links {
+    font-size: 9px;
+  }
+}
