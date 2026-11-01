@@ -799,12 +799,33 @@ button {
   }
 }
 
-/* TRANSACTION PAGE SCROLLING */
+/* =================================
+   TRANSACTION PAGE SCROLLING FIX
+================================= */
 
-.transaction-container {
+.transaction-page {
+  height: calc(100dvh - 110px);
+  min-height: 320px;
   display: flex;
   flex-direction: column;
+  overflow: hidden;
+}
+
+.transaction-header {
+  flex-shrink: 0;
+}
+
+.transaction-container {
+  flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.transaction-controls {
+  flex-shrink: 0;
+  background: #fff;
 }
 
 .transaction-heading,
@@ -814,16 +835,17 @@ button {
 }
 
 .transaction-list-scroll {
-  height: 55vh;
-  min-height: 300px;
-  max-height: 600px;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  max-height: none;
   overflow-y: auto;
+  overflow-x: hidden;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   padding-right: 5px;
 }
 
-/* Custom scrollbar */
 .transaction-list-scroll::-webkit-scrollbar {
   width: 5px;
 }
